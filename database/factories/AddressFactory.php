@@ -3,21 +3,22 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\User;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Address>
- */
 class AddressFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
+        $this->faker->locale = 'fa_IR';
+
         return [
-            //
+            'user_id' => User::factory(),
+            'title' => $this->faker->randomElement(['خانه', 'محل کار', 'آدرس موقت']),
+            'address' => $this->faker->address(),
+            'city' => $this->faker->city(),
+            'postal_code' => $this->faker->postcode(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

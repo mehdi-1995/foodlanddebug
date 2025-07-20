@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Seller\DashboardController as DashboardControllerSeller;
 use App\Http\Controllers\Courier\DashboardController as DashboardControllerCourier;
+use App\Http\Controllers\Customer\PointsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -12,4 +13,7 @@ Route::middleware(['auth', 'role:seller'])->group(function () {
 });
 Route::middleware(['auth', 'role:courier'])->group(function () {
     Route::get('/courier/dashboard', [DashboardControllerCourier::class, 'index'])->name('courier.dashboard');
+});
+Route::middleware(['auth', 'role:customer'])->group(function () {
+    Route::get('/customer/points', [PointsController::class, 'index'])->name('customer.points');
 });
