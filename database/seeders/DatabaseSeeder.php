@@ -2,33 +2,39 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\User;
 use App\Models\Restaurant;
+use App\Models\MenuItem;
+use App\Models\CartItem;
 use Illuminate\Database\Seeder;
-
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // ایجاد کاربران
+        if (!User::where('email', 'moshtari@mesal.ir')->exists()) {
+            User::factory()->create([
+                'name' => 'مشتری آزمایشی',
+                'email' => 'moshtari@mesal.ir',
+                'phone' => '09123456789',
+                'role' => 'customer',
+            ]);
+        }
 
-        User::factory()->create([
-            'name' => 'Test Customer',
-            'email' => 'customer@example.com',
-            'role' => 'customer',
-        ]);
+        if (!User::where('email', 'foroshande@mesal.ir')->exists()) {
+            User::factory()->create([
+                'name' => 'فروشنده آزمایشی',
+                'email' => 'foroshande@mesal.ir',
+                'phone' => '09129876543',
+                'role' => 'seller',
+            ]);
+        }
 
-        User::factory()->create([
-            'name' => 'Test Seller',
-            'email' => 'seller@example.com',
-            'role' => 'seller',
-        ]);
+        Restaurant::factory()->count(5)->create()->each(function ($restaurant) {
+            MenuItem::factory()->count(3)->create(['restaurant_id' => $restaurant->id]);
+        });
 
-        Restaurant::factory()->count(5)->create();
+        CartItem::factory()->count(10)->create();
     }
 }
