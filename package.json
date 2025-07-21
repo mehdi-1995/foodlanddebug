@@ -3,6 +3,7 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
+        "postbuild": "copy public\\build\\.vite\\manifest.json public\\build\\manifest.json",
         "dev": "vite"
     },
     "devDependencies": {

@@ -5,6 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Courier
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property string|null $vehicle_type
+ * @property string|null $license_plate
+ * @property bool|null $is_available
+ */
 class Courier extends Model
 {
     /** @use HasFactory<\Database\Factories\CourierFactory> */

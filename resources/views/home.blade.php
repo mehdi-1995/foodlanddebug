@@ -17,6 +17,10 @@
                 <input type="text" placeholder="جستجوی رستوران..." class="p-2 border rounded-lg">
                 <a href="#" class="text-blue-600">سبد خرید</a>
                 <a href="#" class="text-blue-600">پروفایل</a>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="text-red-600 hover:text-red-800">خروج</button>
+                </form>
             </div>
         </div>
     </header>

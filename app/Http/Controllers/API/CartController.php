@@ -45,4 +45,14 @@ class CartController extends Controller
         $cartItem->delete();
         return response()->json(null, 204);
     }
+
+    // public function destroy(CartItem $cartItem)
+    // {
+    //     if (Auth::id() !== $cartItem->user_id) {
+    //         return response()->json(['error' => 'Unauthorized'], 403);
+    //     }
+
+    //     $cartItem->delete();
+    //     return response()->json(null, 204);
+    // }
 }

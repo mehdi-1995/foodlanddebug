@@ -15,7 +15,10 @@
             <h1 class="text-2xl font-bold text-gray-800">پنل پیک - {{ $courier->user->name }}</h1>
             <div class="flex items-center space-x-4">
                 <a href="{{ route('courier.dashboard') }}" class="text-blue-600">داشبورد</a>
-                <a href="#" class="text-blue-600">خروج</a>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="text-red-600 hover:text-red-800">خروج</button>
+                </form>
             </div>
         </div>
     </header>

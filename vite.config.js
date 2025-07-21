@@ -20,5 +20,6 @@ export default defineConfig({
     build: {
         outDir: "public/build", // مسیر خروجی فایل‌های بیلد
         manifest: true, // تولید manifest.json
+        assetsDir: "", // prevent .vite folder, put manifest.json directly in outDir
     },
 });
