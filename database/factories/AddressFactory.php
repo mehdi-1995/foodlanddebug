@@ -17,6 +17,8 @@ class AddressFactory extends Factory
             'address' => $this->faker->address(),
             'city' => $this->faker->city(),
             'postal_code' => $this->faker->postcode(),
+            'latitude' => $this->faker->latitude(35.6, 35.8), // Example for Tehran
+            'longitude' => $this->faker->longitude(51.3, 51.5),
             'created_at' => now(),
             'updated_at' => now(),
         ];

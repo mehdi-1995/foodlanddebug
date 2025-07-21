@@ -21,7 +21,7 @@
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-6">
         <h2 class="text-xl font-semibold mb-4">سفارش‌های تحویلی</h2>
-        <div class="bg-white rounded-lg shadow-md p-4">
+        <div class="bg-white rounded-lg shadow-md p-4 mb-6">
             @if ($orders->isEmpty())
                 <p class="text-gray-500">هیچ سفارشی یافت نشد.</p>
             @else
@@ -29,6 +29,11 @@
                     <courier-order-tracker></courier-order-tracker>
                 </div>
             @endif
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <div id="app">
+                <courier-map></courier-map>
+            </div>
         </div>
     </main>
 
