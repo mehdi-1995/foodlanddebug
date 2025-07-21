@@ -12,9 +12,15 @@
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <h1 class="text-2xl font-bold text-gray-800">فودلند</h1>
             <div class="flex items-center space-x-4">
-                <form action="{{ route('home') }}" method="GET" class="flex items-center">
+                <form action="{{ route('home') }}" method="GET" class="flex items-center space-x-2">
                     <input type="text" name="search" placeholder="جستجوی رستوران..." value="{{ request('search') }}" class="p-2 border rounded-lg">
-                    <button type="submit" class="mr-2 bg-blue-600 text-white px-4 py-2 rounded-lg">جستجو</button>
+                    <select name="category" class="p-2 border rounded-lg">
+                        <option value="">همه دسته‌بندی‌ها</option>
+                        @foreach ($categories as $cat)
+                            <option value="{{ $cat }}" {{ request('category') === $cat ? 'selected' : '' }}>{{ $cat }}</option>
+                        @endforeach
+                    </select>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg">جستجو</button>
                 </form>
                 <a href="#" class="text-blue-600">سبد خرید</a>
                 <a href="#" class="text-blue-600">پروفایل</a>
@@ -38,6 +44,7 @@
                                 <div class="p-4">
                                     <h3 class="text-lg font-semibold">{{ $restaurant->name }}</h3>
                                     <p class="text-gray-600 text-sm">{{ $restaurant->address }}</p>
+                                    <p class="text-gray-600 text-sm">دسته‌بندی: {{ $restaurant->category }}</p>
                                     <div class="flex items-center mt-2">
                                         <span class="text-yellow-500">{{ str_repeat('★', round($restaurant->rating)) }}</span>
                                         <span class="text-gray-500 text-sm mr-2">({{ number_format($restaurant->rating, 1) }})</span>

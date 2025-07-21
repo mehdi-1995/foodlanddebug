@@ -2,32 +2,45 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MenuItem;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     /**
-     * Display the homepage with restaurant search.
+     * Display the homepage with restaurant search and category filter.
      */
     public function index(Request $request)
     {
         $query = $request->input('search');
+        $category = $request->input('category');
         $restaurants = Restaurant::query()
             ->when($query, function ($queryBuilder, $search) {
                 return $queryBuilder->where('name', 'like', "%{$search}%")
                     ->orWhere('address', 'like', "%{$search}%");
             })
+            ->when($category, function ($queryBuilder, $cat) {
+                return $queryBuilder->where('category', $cat);
+            })
             ->get();
-        return view('home', compact('restaurants'));
+        $categories = Restaurant::select('category')->distinct()->pluck('category');
+        return view('home', compact('restaurants', 'categories'));
     }
 
     /**
-     * Display a specific restaurant's menu.
+     * Display a specific restaurant's menu with category filter.
      */
-    public function show(Restaurant $restaurant)
+    public function show(Request $request, Restaurant $restaurant)
     {
-        $menuItems = $restaurant->menuItems;
-        return view('restaurants.show', compact('restaurant', 'menuItems'));
+        $category = $request->input('category');
+        $menuItems = MenuItem::where('restaurant_id', $restaurant->id)
+            ->when($category, function ($queryBuilder, $cat) {
+                return $queryBuilder->where('category', $cat);
+            })
+            ->get();
+        $categories = MenuItem::where('restaurant_id', $restaurant->id)
+            ->select('category')->distinct()->pluck('category');
+        return view('restaurants.show', compact('restaurant', 'menuItems', 'categories'));
     }
 }

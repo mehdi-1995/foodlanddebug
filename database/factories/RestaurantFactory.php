@@ -19,11 +19,11 @@ class RestaurantFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'name' => $this->faker->company(),
-            'address' => $this->faker->address(),
-            'phone' => $this->faker->phoneNumber(),
-            'logo' => $this->faker->imageUrl(),
-            'rating' => $this->faker->randomFloat(1, 3, 5),
+            'name' => $this->faker->company,
+            'address' => $this->faker->address,
+            'logo' => $this->faker->imageUrl(300, 150),
+            'rating' => $this->faker->randomFloat(1, 1, 5),
+            'category' => $this->faker->randomElement(['ایرانی', 'فست‌فود', 'ایتالیایی', 'کافه']),
         ];
     }
 }
