@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>پنل پیک - فودلند</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-
 <body class="bg-gray-100 font-sans">
     <!-- Header -->
     <header class="bg-white shadow">
@@ -15,10 +13,7 @@
             <h1 class="text-2xl font-bold text-gray-800">پنل پیک - {{ $courier->user->name }}</h1>
             <div class="flex items-center space-x-4">
                 <a href="{{ route('courier.dashboard') }}" class="text-blue-600">داشبورد</a>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="text-red-600 hover:text-red-800">خروج</button>
-                </form>
+                <a href="#" class="text-blue-600">خروج</a>
             </div>
         </div>
     </header>
@@ -30,26 +25,9 @@
             @if ($orders->isEmpty())
                 <p class="text-gray-500">هیچ سفارشی یافت نشد.</p>
             @else
-                <table class="w-full">
-                    <thead>
-                        <tr class="border-b">
-                            <th class="p-2 text-right">شماره سفارش</th>
-                            <th class="p-2 text-right">رستوران</th>
-                            <th class="p-2 text-right">آدرس</th>
-                            <th class="p-2 text-right">وضعیت</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($orders as $order)
-                            <tr class="border-b">
-                                <td class="p-2">{{ $order->id }}</td>
-                                <td class="p-2">{{ $order->restaurant->name }}</td>
-                                <td class="p-2">{{ $order->address->address }}</td>
-                                <td class="p-2">{{ $order->status }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <div id="app">
+                    <courier-order-tracker></courier-order-tracker>
+                </div>
             @endif
         </div>
     </main>
@@ -61,5 +39,4 @@
         </div>
     </footer>
 </body>
-
 </html>
