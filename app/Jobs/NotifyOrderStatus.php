@@ -3,12 +3,14 @@
 namespace App\Jobs;
 
 use App\Models\Order;
+use App\Mail\OrderConfirmation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class NotifyOrderStatus implements ShouldQueue
 {
@@ -29,7 +31,7 @@ class NotifyOrderStatus implements ShouldQueue
      */
     public function handle(): void
     {
-        // Simulate sending notification (e.g., email, SMS)
         Log::info("Order {$this->order->id} status updated to {$this->order->status}");
+        Mail::to($this->order->user->email)->send(new OrderConfirmation($this->order));
     }
 }
