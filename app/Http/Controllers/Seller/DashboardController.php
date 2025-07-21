@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Restaurant;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -14,7 +15,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $restaurant = Restaurant::where('user_id', auth()->id())->firstOrFail();
+        $restaurant = Restaurant::where('user_id', Auth::id())->firstOrFail();
         $orders = Order::where('restaurant_id', $restaurant->id)->latest()->take(10)->get();
         return view('seller.dashboard', compact('restaurant', 'orders'));
     }
