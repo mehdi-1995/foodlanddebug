@@ -5,31 +5,21 @@
             سبد خرید شما خالی است.
         </div>
         <div v-else>
-            <div
-                v-for="item in cartItems"
-                :key="item.id"
-                class="flex justify-between items-center mb-2"
-            >
+            <div v-for="item in cartItems" :key="item.id" class="flex justify-between items-center mb-2">
                 <div>
                     <p class="font-medium">{{ item.menu_item.name }}</p>
-                    <p class="text-gray-600">
-                        {{ item.quantity }} x {{ item.price }} تومان
-                    </p>
+                    <p class="text-gray-600">{{ item.quantity }} x {{ item.price }} تومان</p>
                 </div>
-                <button @click="removeItem(item.id)" class="text-red-600">
-                    حذف
-                </button>
+                <button @click="removeItem(item.id)" class="text-red-600">حذف</button>
             </div>
             <p class="font-semibold mt-4">مجموع: {{ totalPrice }} تومان</p>
-            <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg">
-                ثبت سفارش
-            </button>
+            <button @click="placeOrder" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg">پرداخت</button>
         </div>
     </div>
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 
 export default {
     data() {
@@ -39,10 +29,7 @@ export default {
     },
     computed: {
         totalPrice() {
-            return this.cartItems.reduce(
-                (total, item) => total + item.price * item.quantity,
-                0
-            );
+            return this.cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
         },
     },
     mounted() {
@@ -51,32 +38,34 @@ export default {
     methods: {
         async fetchCartItems() {
             try {
-                const response = await axios.get("/api/cart", {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "token"
-                        )}`,
-                    },
+                const response = await axios.get('/api/cart', {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
                 });
                 this.cartItems = response.data;
             } catch (error) {
-                console.error("Error fetching cart items:", error);
+                console.error('Error fetching cart items:', error);
             }
         },
         async removeItem(itemId) {
             try {
                 await axios.delete(`/api/cart/${itemId}`, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "token"
-                        )}`,
-                    },
+                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
                 });
-                this.cartItems = this.cartItems.filter(
-                    (item) => item.id !== itemId
-                );
+                this.cartItems = this.cartItems.filter(item => item.id !== itemId);
             } catch (error) {
-                console.error("Error removing item:", error);
+                console.error('Error removing item:', error);
+            }
+        },
+        async placeOrder() {
+            try {
+                const response = await axios.post('/api/orders', {
+                    address_id: 1, // Replace with dynamic address selection
+                }, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+                });
+                window.location.href = response.data.payment_url;
+            } catch (error) {
+                console.error('Error placing order:', error);
             }
         },
     },

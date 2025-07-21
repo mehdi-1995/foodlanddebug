@@ -5,6 +5,7 @@ use App\Http\Controllers\Seller\DashboardController as DashboardControllerSeller
 use App\Http\Controllers\Courier\DashboardController as DashboardControllerCourier;
 use App\Http\Controllers\Customer\PointsController;
 use App\Http\Controllers\Seller\MenuItemController;
+use App\Http\Controllers\API\OrderController;
 use Illuminate\Support\Facades\Route;
 
 use Illuminate\Http\Request;
@@ -37,6 +38,7 @@ Route::middleware(['auth', 'role:courier'])->group(function () {
 Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/customer/points', [PointsController::class, 'index'])->name('customer.points');
 });
+Route::get('/payment/verify', [OrderController::class, 'verify'])->name('payment.verify');
 
 Route::post('/logout', function (\Illuminate\Http\Request $request) {
     \Illuminate\Support\Facades\Auth::logout();
