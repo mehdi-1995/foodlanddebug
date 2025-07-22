@@ -17,3 +17,7 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
         Route::put('/{order}', [CourierOrderController::class, 'update'])->name('courier-orders.update');
     });
 });
+
+
+// Route::post('/payment', [App\Http\Controllers\PaymentController::class, 'initiatePayment'])->middleware('auth:sanctum');
+// Route::get('/payment/callback', [App\Http\Controllers\PaymentController::class, 'callback']);

@@ -1,75 +1,78 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>فودلند - سفارش غذا</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="bg-gray-100 font-sans">
-    <!-- Header -->
-    <header class="bg-white shadow">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-gray-800">فودلند</h1>
-            <div class="flex items-center space-x-4">
-                <form action="{{ route('home') }}" method="GET" class="flex items-center space-x-2">
-                    <input type="text" name="search" placeholder="جستجوی رستوران..." value="{{ request('search') }}" class="p-2 border rounded-lg">
-                    <select name="category" class="p-2 border rounded-lg">
-                        <option value="">همه دسته‌بندی‌ها</option>
-                        @foreach ($categories as $cat)
-                            <option value="{{ $cat }}" {{ request('category') === $cat ? 'selected' : '' }}>{{ $cat }}</option>
-                        @endforeach
-                    </select>
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg">جستجو</button>
-                </form>
-                <a href="#" class="text-blue-600">سبد خرید</a>
-                <a href="#" class="text-blue-600">پروفایل</a>
-            </div>
+<!-- resources/views/home.blade.php -->
+@extends('layouts.app')
+@section('content')
+<!-- هدر -->
+<header class="bg-white shadow-md p-4">
+    <div class="container mx-auto flex justify-between items-center">
+        <div class="text-2xl font-bold text-pink-600">لوگوی وب‌سایت</div>
+        <div class="search-bar flex items-center w-1/2">
+            <input type="text" id="searchInput" placeholder="جستجوی رستوران، غذا یا محله..." class="w-full bg-transparent outline-none">
+            <i class="fas fa-search text-gray-500"></i>
         </div>
-    </header>
+        <div class="flex items-center space-x-4">
+            <div class="cart-icon">
+                <a href="{{ url('/cart') }}"><i class="fas fa-shopping-cart text-2xl text-gray-700"></i></a>
+                <span class="badge" id="cartCount">0</span>
+            </div>
+            <button id="loginBtn" class="bg-pink-600 text-white px-4 py-2 rounded-full">ورود / ثبت‌نام</button>
+        </div>
+    </div>
+</header>
 
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 py-6">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <!-- Restaurant List -->
-            <div class="md:col-span-3">
-                <h2 class="text-xl font-semibold mb-4">رستوران‌های نزدیک شما</h2>
-                @if ($restaurants->isEmpty())
-                    <p class="text-gray-500">هیچ رستورانی یافت نشد.</p>
-                @else
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        @foreach ($restaurants as $restaurant)
-                            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                                <img src="{{ $restaurant->logo }}" alt="{{ $restaurant->name }}" class="w-full h-40 object-cover">
-                                <div class="p-4">
-                                    <h3 class="text-lg font-semibold">{{ $restaurant->name }}</h3>
-                                    <p class="text-gray-600 text-sm">{{ $restaurant->address }}</p>
-                                    <p class="text-gray-600 text-sm">دسته‌بندی: {{ $restaurant->category }}</p>
-                                    <div class="flex items-center mt-2">
-                                        <span class="text-yellow-500">{{ str_repeat('★', round($restaurant->rating)) }}</span>
-                                        <span class="text-gray-500 text-sm mr-2">({{ number_format($restaurant->rating, 1) }})</span>
-                                    </div>
-                                    <a href="{{ route('restaurants.show', $restaurant->id) }}" class="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded-lg">مشاهده منو</a>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                @endif
-            </div>
-            <!-- Cart Component -->
-            <div class="md:col-span-1">
-                <div id="app">
-                    <cart></cart>
-                </div>
-            </div>
-        </div>
-    </main>
+<!-- مودال ورود/ثبت‌نام -->
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <h2 class="text-xl font-bold mb-4">ورود / ثبت‌نام</h2>
+        <form id="loginForm">
+            <input type="text" id="phone" placeholder="شماره موبایل" class="w-full p-2 mb-4 border rounded">
+            <input type="password" id="password" placeholder="رمز عبور" class="w-full p-2 mb-4 border rounded">
+            <button type="submit" class="bg-pink-600 text-white px-4 py-2 rounded-full w-full">ورود</button>
+        </form>
+        <button id="closeModal" class="mt-4 text-gray-600">بستن</button>
+    </div>
+</div>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-4">
-        <div class="container mx-auto px-4 text-center">
-            <p>تمامی حقوق برای فودلند محفوظ است © ۱۴۰۴</p>
+<!-- دسته‌بندی‌ها -->
+<section class="container mx-auto my-6">
+    <div class="flex space-x-4 overflow-x-auto">
+        <button class="category-filter px-4 py-2 bg-pink-600 text-white rounded-full" data-category="all">همه</button>
+        <button class="category-filter px-4 py-2 bg-gray-200 text-gray-700 rounded-full" data-category="restaurant">رستوران‌ها</button>
+        <button class="category-filter px-4 py-2 bg-gray-200 text-gray-700 rounded-full" data-category="cafe">کافه</button>
+        <button class="category-filter px-4 py-2 bg-gray-200 text-gray-700 rounded-full" data-category="bakery">شیرینی‌فروشی</button>
+        <button class="category-filter px-4 py-2 bg-gray-200 text-gray-700 rounded-full" data-category="supermarket">سوپرمارکت</button>
+    </div>
+</section>
+
+<!-- لیست رستوران‌ها -->
+<section class="container mx-auto my-6">
+    <h2 class="text-2xl font-bold mb-4">رستوران‌های نزدیک شما</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="restaurantList">
+        <!-- رستوران‌ها به صورت دینامیک اضافه می‌شوند -->
+    </div>
+</section>
+
+<!-- فوتر -->
+<footer class="bg-gray-800 text-white p-6">
+    <div class="container mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+                <h3 class="text-lg font-bold">درباره ما</h3>
+                <p class="mt-2">وب‌سایت سفارش آنلاین غذا با هدف ارائه بهترین خدمات.</p>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold">لینک‌های مفید</h3>
+                <ul class="mt-2">
+                    <li><a href="#" class="hover:underline">تماس با ما</a></li>
+                    <li><a href="#" class="hover:underline">سوالات متداول</a></li>
+                    <li><a href="#" class="hover:underline">قوانین و مقررات</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold">تماس با ما</h3>
+                <p class="mt-2">ایمیل: support@example.com</p>
+                <p>تلفن: 021-12345678</p>
+            </div>
         </div>
-    </footer>
-</body>
-</html>
+    </div>
+</footer>
+@endsection
