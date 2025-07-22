@@ -35,6 +35,9 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        // Add courier and seller users
+        $this->call(\Database\Seeders\CourierSellerUserSeeder::class);
+
         // ایجاد کوریرها و آدرس‌ها
         Courier::factory()->count(5)->create();
         Address::factory()->count(10)->create();
