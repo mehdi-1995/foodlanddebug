@@ -1,4 +1,3 @@
-<!-- resources/js/components/Home.vue -->
 <template>
   <div class="bg-gray-100">
     <!-- هدر -->

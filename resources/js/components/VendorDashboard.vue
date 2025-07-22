@@ -1,4 +1,3 @@
-<!-- resources/js/components/VendorDashboard.vue -->
 <template>
   <div>
     <!-- بقیه داشبورد -->

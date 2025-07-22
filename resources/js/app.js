@@ -1,12 +1,15 @@
-import '../css/app.css';
-
-// resources/js/app.js
 import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import axios from 'axios';
 import App from './components/App.vue';
 
 window.axios = axios;
+
+// اضافه کردن توکن به هدرهای axios
+const token = localStorage.getItem('token');
+if (token) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
 
 const router = createRouter({
     history: createWebHistory(),

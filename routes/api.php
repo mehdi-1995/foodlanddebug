@@ -19,5 +19,9 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
 });
 
 
+use App\Http\Controllers\API\AuthController;
+
+Route::post('/login', [AuthController::class, 'login'])->name('api.login');
+
 // Route::post('/payment', [App\Http\Controllers\PaymentController::class, 'initiatePayment'])->middleware('auth:sanctum');
 // Route::get('/payment/callback', [App\Http\Controllers\PaymentController::class, 'callback']);
