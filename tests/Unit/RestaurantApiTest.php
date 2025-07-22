@@ -32,4 +32,16 @@ class RestaurantApiTest extends TestCase
         $response->assertStatus(200)
             ->assertJson(['id' => $restaurant->id]);
     }
+
+    public function test_orders_relationship()
+    {
+        $restaurant = Restaurant::factory()->create();
+        $orders = \App\Models\Order::factory()->count(2)->create([
+            'restaurant_id' => $restaurant->id,
+        ]);
+
+        $this->assertCount(2, $restaurant->orders);
+        $this->assertTrue($restaurant->orders->contains($orders[0]));
+        $this->assertTrue($restaurant->orders->contains($orders[1]));
+    }
 }
