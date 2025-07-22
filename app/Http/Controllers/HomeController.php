@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MenuItem;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
 
@@ -29,18 +28,17 @@ class HomeController extends Controller
     }
 
     /**
-     * Display a specific restaurant's menu with category filter.
+     * Display a specific restaurant's menu with category filter and reviews.
      */
     public function show(Request $request, Restaurant $restaurant)
     {
         $category = $request->input('category');
-        $menuItems = MenuItem::where('restaurant_id', $restaurant->id)
+        $menuItems = $restaurant->menuItems()
             ->when($category, function ($queryBuilder, $cat) {
                 return $queryBuilder->where('category', $cat);
             })
             ->get();
-        $categories = MenuItem::where('restaurant_id', $restaurant->id)
-            ->select('category')->distinct()->pluck('category');
+        $categories = $restaurant->menuItems()->select('category')->distinct()->pluck('category');
         return view('restaurants.show', compact('restaurant', 'menuItems', 'categories'));
     }
 }

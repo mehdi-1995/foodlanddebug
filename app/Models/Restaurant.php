@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Restaurant extends Model
 {
-    /** @use HasFactory<\Database\Factories\RestaurantFactory> */
     use HasFactory;
 
-    protected $fillable = ['user_id', 'name', 'address', 'logo', 'rating', 'category'];
+    protected $fillable = ['user_id', 'name', 'address', 'logo', 'rating', 'category', 'latitude', 'longitude'];
 
     public function user()
     {
@@ -27,13 +26,8 @@ class Restaurant extends Model
         return $this->hasMany(Review::class);
     }
 
-    public function getRatingAttribute($value)
+    public function getRatingAttribute()
     {
-        return $this->reviews()->average('rating') ?? $value;
-    }
-
-    public function orders()
-    {
-        return $this->hasMany(Order::class);
+        return $this->reviews()->average('rating') ?? 0;
     }
 }

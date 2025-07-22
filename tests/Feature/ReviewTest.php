@@ -23,6 +23,7 @@ class ReviewTest extends TestCase
         ]);
 
         $response->assertRedirect(route('restaurants.show', $restaurant->id));
+        $response->assertSessionHas('success', 'نظر شما با موفقیت ثبت شد.');
         $this->assertDatabaseHas('reviews', [
             'user_id' => $user->id,
             'restaurant_id' => $restaurant->id,
@@ -41,5 +42,18 @@ class ReviewTest extends TestCase
         ]);
 
         $response->assertRedirect(route('login'));
+    }
+
+    public function test_rating_validation_fails_for_invalid_input()
+    {
+        $user = User::factory()->create();
+        $restaurant = Restaurant::factory()->create();
+
+        $response = $this->actingAs($user)->post(route('reviews.store', $restaurant->id), [
+            'rating' => 6, // Invalid rating
+            'comment' => 'غذای عالی!',
+        ]);
+
+        $response->assertSessionHasErrors('rating');
     }
 }

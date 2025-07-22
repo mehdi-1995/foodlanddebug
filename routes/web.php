@@ -46,8 +46,6 @@ Route::post('/restaurants/{restaurant}/reviews', [ReviewController::class, 'stor
 Route::resource('cart', CartController::class)->only(['index', 'store', 'destroy'])->middleware('auth');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
 Route::get('/payment/verify', [OrderController::class, 'verify'])->name('payment.verify');
-Route::get('/seller/dashboard', [SellerController::class, 'dashboard'])->name('seller.dashboard')->middleware('auth');
-Route::get('/courier/dashboard', [CourierController::class, 'dashboard'])->name('courier.dashboard')->middleware('auth');
 
 
 Route::post('/logout', function (\Illuminate\Http\Request $request) {
