@@ -10,7 +10,7 @@ class Restaurant extends Model
     /** @use HasFactory<\Database\Factories\RestaurantFactory> */
     use HasFactory;
 
-    protected $fillable = ['user_id', 'name', 'address', 'phone', 'logo', 'rating'];
+    protected $fillable = ['user_id', 'name', 'address', 'logo', 'rating', 'category'];
 
     public function user()
     {
@@ -20,6 +20,16 @@ class Restaurant extends Model
     public function menuItems()
     {
         return $this->hasMany(MenuItem::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function getRatingAttribute($value)
+    {
+        return $this->reviews()->average('rating') ?? $value;
     }
 
     public function orders()

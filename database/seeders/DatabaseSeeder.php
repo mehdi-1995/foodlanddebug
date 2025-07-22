@@ -10,6 +10,7 @@ use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\LoyaltyPoint;
 use App\Models\Courier;
+use App\Models\Review;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -45,6 +46,7 @@ class DatabaseSeeder extends Seeder
         // ایجاد رستوران‌ها و آیتم‌های منو
         Restaurant::factory()->count(5)->create()->each(function ($restaurant) {
             MenuItem::factory()->count(3)->create(['restaurant_id' => $restaurant->id]);
+            Review::factory()->count(2)->create(['restaurant_id' => $restaurant->id]);
         });
 
         // ایجاد آیتم‌های سبد خرید، سفارش‌ها و امتیازات وفاداری

@@ -1,12 +1,16 @@
 <?php
 
+use App\Http\Controllers\API\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Seller\DashboardController as DashboardControllerSeller;
 use App\Http\Controllers\Courier\DashboardController as DashboardControllerCourier;
 use App\Http\Controllers\Customer\PointsController;
 use App\Http\Controllers\Seller\MenuItemController;
 use App\Http\Controllers\API\OrderController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SellerController;
+use App\Http\Controllers\CourierController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,7 +42,13 @@ Route::middleware(['auth', 'role:courier'])->group(function () {
 Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/customer/points', [PointsController::class, 'index'])->name('customer.points');
 });
+Route::post('/restaurants/{restaurant}/reviews', [ReviewController::class, 'store'])->name('reviews.store')->middleware('auth');
+Route::resource('cart', CartController::class)->only(['index', 'store', 'destroy'])->middleware('auth');
+Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
 Route::get('/payment/verify', [OrderController::class, 'verify'])->name('payment.verify');
+Route::get('/seller/dashboard', [SellerController::class, 'dashboard'])->name('seller.dashboard')->middleware('auth');
+Route::get('/courier/dashboard', [CourierController::class, 'dashboard'])->name('courier.dashboard')->middleware('auth');
+
 
 Route::post('/logout', function (\Illuminate\Http\Request $request) {
     \Illuminate\Support\Facades\Auth::logout();
