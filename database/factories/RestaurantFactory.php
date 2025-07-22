@@ -25,6 +25,8 @@ class RestaurantFactory extends Factory
             'logo' => $this->faker->imageUrl(300, 150),
             'rating' => $this->faker->randomFloat(1, 1, 5),
             'category' => $this->faker->randomElement(['ایرانی', 'فست‌فود', 'ایتالیایی', 'کافه']),
+            'latitude' => $this->faker->latitude(35.6, 35.8), // Example for Tehran
+            'longitude' => $this->faker->longitude(51.3, 51.5),
         ];
     }
 }
