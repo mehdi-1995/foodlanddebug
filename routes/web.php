@@ -30,6 +30,34 @@ Route::post('login', function (Request $request) {
     ]);
 })->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 
+// Registration routes
+Route::get('register', function () {
+    return view('auth.register');
+})->name('register');
+
+Route::post('register', function (Request $request) {
+    $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'phone' => ['required', 'string', 'max:20'],
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+    ]);
+
+    $user = \App\Models\User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'phone' => $request->phone,
+        'password' => $request->password,
+        'role' => 'customer', // default role
+    ]);
+
+    Auth::login($user);
+
+    $request->session()->regenerate();
+
+    return redirect()->intended('/');
+});
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/restaurants/{restaurant}', [HomeController::class, 'show'])->name('restaurants.show');
 Route::middleware(['auth', 'role:seller'])->group(function () {
