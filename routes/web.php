@@ -27,7 +27,6 @@ Route::post('login', function (Request $request) {
     ]);
 })->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 
-// Registration routes
 Route::get('register', function () {
     return view('auth.register');
 })->name('register');
@@ -45,32 +44,46 @@ Route::post('register', function (Request $request) {
         'email' => $request->email,
         'phone' => $request->phone,
         'password' => $request->password,
-        'role' => 'customer', // default role
+        'role' => 'customer',
     ]);
 
     Auth::login($user);
-
     $request->session()->regenerate();
-
     return redirect()->intended('/');
 });
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/restaurants/{restaurant}', [HomeController::class, 'show'])->name('restaurants.show');
+Route::get('/contact', function () {
+    return view('home');
+})->name('contact');
+Route::get('/faq', function () {
+    return view('home');
+})->name('faq');
+Route::get('/terms', function () {
+    return view('home');
+})->name('terms');
+Route::get('/profile', function () {
+    return view('home');
+})->name('profile')->middleware('auth');
+
 Route::middleware(['auth', 'role:seller'])->group(function () {
     Route::get('/seller/dashboard', [DashboardControllerSeller::class, 'index'])->name('seller.dashboard');
     Route::resource('/seller/menu', MenuItemController::class)->names('seller.menu');
 });
+
 Route::middleware(['auth', 'role:courier'])->group(function () {
     Route::get('/courier/dashboard', [DashboardControllerCourier::class, 'index'])->name('courier.dashboard');
 });
+
 Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/customer/points', [PointsController::class, 'index'])->name('customer.points');
 });
+
 Route::post('/restaurants/{restaurant}/reviews', [ReviewController::class, 'store'])->name('reviews.store')->middleware('auth');
 Route::resource('cart', CartController::class)->only(['index', 'store', 'destroy'])->middleware('auth');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
-Route::get('/payment/verify', [OrderController::class, 'verify'])->name('payment.verify');
+Route::get('/payment/verify', [OrderController::class, 'verify'])->name('payment.verify')->middleware('auth');
 
 Route::post('/logout', function (Request $request) {
     Auth::logout();
