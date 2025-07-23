@@ -1,5 +1,21 @@
 /* resources/css/app.css */
+
+/* ۱. وارد کردن فونت‌ها */
+@import "@fontsource/vazirmatn/100.css"; /* وزن نازک */
+@import "@fontsource/vazirmatn/300.css"; /* وزن لایت */
+@import "@fontsource/vazirmatn/400.css"; /* وزن معمولی */
+@import "@fontsource/vazirmatn/700.css"; /* وزن بولد */
+
+/* ۲. تنظیمات Tailwind */
 @import url('../../public/css/styles.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ۳. استایل‌های سفارشی */
+
+/* تنظیم فونت برای کل پروژه */
+body {
+    font-family: 'Vazirmatn', sans-serif;
+}

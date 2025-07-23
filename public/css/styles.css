@@ -1,22 +1,7 @@
 /* public/css/styles.css */
-@font-face {
-    font-family: 'Vazir';
-    src: url('https://cdn.fontcdn.ir/Fonts/Vazir/Vazir.woff2') format('woff2'),
-         url('https://cdn.fontcdn.ir/Fonts/Vazir/Vazir.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Vazir';
-    src: url('https://cdn.fontcdn.ir/Fonts/Vazir/Vazir-Bold.woff2') format('woff2'),
-         url('https://cdn.fontcdn.ir/Fonts/Vazir/Vazir-Bold.woff') format('woff');
-    font-weight: bold;
-    font-style: normal;
-}
-
+/* فونت‌ها از app.css لود می‌شن، پس @font-face حذف شده */
 body {
-    font-family: 'Vazir', sans-serif;
+    font-family: 'Vazirmatn', sans-serif; /* تغییر از Vazir به Vazirmatn */
     direction: rtl;
     background-color: #f3f4f6;
 }

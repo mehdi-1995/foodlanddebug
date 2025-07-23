@@ -18,8 +18,11 @@
         "vue": "^3.5.12"
     },
     "dependencies": {
+        "@fontsource/vazirmatn": "^5.2.6",
         "leaflet": "^1.9.4",
         "leaflet-routing-machine": "^3.2.12",
-        "vue-router": "^4.5.1"
+        "vazirmatn": "^33.0.3",
+        "vue-router": "^4.5.1",
+        "ziggy-js": "^2.5.3"
     }
 }

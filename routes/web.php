@@ -9,9 +9,6 @@ use App\Http\Controllers\Seller\MenuItemController;
 use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SellerController;
-use App\Http\Controllers\CourierController;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -75,16 +72,13 @@ Route::resource('cart', CartController::class)->only(['index', 'store', 'destroy
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store')->middleware('auth');
 Route::get('/payment/verify', [OrderController::class, 'verify'])->name('payment.verify');
 
-
-Route::post('/logout', function (\Illuminate\Http\Request $request) {
-    \Illuminate\Support\Facades\Auth::logout();
+Route::post('/logout', function (Request $request) {
+    Auth::logout();
     $request->session()->invalidate();
     $request->session()->regenerateToken();
     return redirect('/login');
 })->name('logout');
 
-
-
-
-
-
+Route::get('/{any}', function () {
+    return view('home');
+})->where('any', '.*');

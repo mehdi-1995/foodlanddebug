@@ -20,10 +20,14 @@ class RestaurantController extends Controller
 
     public function show(Restaurant $restaurant)
     {
+
+        return $restaurant;
+
+
         // Cache single restaurant for 10 minutes
-        $restaurant = Cache::remember("restaurant_{$restaurant->id}", now()->addMinutes(10), function () use ($restaurant) {
-            return $restaurant->load('menuItems');
-        });
-        return response()->json($restaurant);
+        // $restaurant = Cache::remember("restaurant_{$restaurant->id}", now()->addMinutes(10), function () use ($restaurant) {
+        //     return $restaurant->load('menuItems');
+        // });
+        // return response()->json($restaurant);
     }
 }

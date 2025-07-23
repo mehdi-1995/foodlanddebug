@@ -7,6 +7,7 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -25,6 +26,14 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->configureRateLimiting();
+
+        // Custom binding for CartItem scoped to authenticated user
+        Route::bind('cart', function ($value) {
+            $user = Auth::user();
+            return \App\Models\CartItem::where('id', $value)
+                ->where('user_id', $user ? $user->id : 0)
+                ->firstOrFail();
+        });
 
         $this->routes(function () {
             Route::middleware('api')
